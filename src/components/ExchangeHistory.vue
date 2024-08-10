@@ -42,10 +42,20 @@
 import { defineComponent, ref, computed } from 'vue';
 import axios from 'axios';
 
+interface ExchangeRequest {
+    _id: string;
+    monedaOrigen: string;
+    monedaDestino: string;
+    monto: number;
+    montoCambiado: number;
+    tipoCambio: number;
+    fecha: string;
+}
+
 export default defineComponent({
     name: 'ExchangeHistory',
     setup() {
-        const requests = ref([]);
+        const requests = ref<ExchangeRequest[]>([]);
         const currentPage = ref(1);
         const pageSize = 3;
 
@@ -57,7 +67,7 @@ export default defineComponent({
         const fetchHistory = async () => {
             try {
                 const { startDate, endDate } = filters.value;
-                const response = await axios.get(`http://localhost:5000/api/exchange-history?startDate=${startDate}&endDate=${endDate}`);
+                const response = await axios.get<ExchangeRequest[]>(`http://localhost:5000/api/exchange-history?startDate=${startDate}&endDate=${endDate}`);
                 requests.value = response.data;
                 currentPage.value = 1;  // Reset to the first page after fetching new data
             } catch (error) {
