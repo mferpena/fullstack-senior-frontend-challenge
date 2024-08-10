@@ -12,9 +12,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: npm ci && npm run build
-      - uses: FirebaseExtended/action-hosting-deploy@v0
-        with:
-          repoToken: ${{ secrets.GITHUB_TOKEN }}
-          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_TEST_KAMBISTA_E1ED0 }}
-          channelId: live
-          projectId: test-kambista-e1ed0
+      - run: npx firebase-tools@latest deploy --only hosting --project test-kambista-e1ed0 --token ${{ secrets.FIREBASE_DEPLOY_TOKEN }}
+      # - uses: FirebaseExtended/action-hosting-deploy@v0
+      # with:
+      #   repoToken: ${{ secrets.GITHUB_TOKEN }}
+      #   firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_TEST_KAMBISTA_E1ED0 }}
+      #   channelId: live
+      #   projectId: test-kambista-e1ed0
