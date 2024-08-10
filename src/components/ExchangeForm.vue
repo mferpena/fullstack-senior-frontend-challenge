@@ -20,8 +20,8 @@
     </div>
     <div class="mb-4">
       <label for="monto" class="block text-gray-700">Monto</label>
-      <input type="number" v-model="form.monto" id="monto" class="w-full px-4 py-2 border rounded" required min="0"
-        step="0.01" max="9999999" />
+      <input type="text" v-model="form.monto" id="monto" class="w-full px-4 py-2 border rounded" @input="validateMonto"
+        placeholder="0.00" />
     </div>
     <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded">Enviar</button>
   </form>
@@ -30,6 +30,7 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
 import axios from 'axios'
+import Swal from 'sweetalert2'
 
 export default defineComponent({
   name: 'ExchangeForm',
@@ -37,24 +38,54 @@ export default defineComponent({
     const form = ref({
       monedaOrigen: '',
       monedaDestino: '',
-      monto: null
+      monto: ''
     })
+
+    const validateMonto = () => {
+      let value = form.value.monto
+      const regex = /^(?!0\d)\d{0,7}(\.\d{0,2})?$/;
+
+      value = value.replace(/[^0-9.]/g, '');
+
+      if (value.includes('.')) {
+        const [integerPart, decimalPart] = value.split('.');
+        value = integerPart.slice(0, 7) + '.' + (decimalPart || '').slice(0, 2);
+      } else {
+        value = value.slice(0, 7);
+      }
+
+      if (regex.test(value)) {
+        form.value.monto = value;
+      }
+    }
 
     const submitForm = async () => {
       if (form.value.monedaOrigen === form.value.monedaDestino) {
-        alert('La moneda de origen y destino no pueden ser la misma');
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'La moneda de origen y destino no pueden ser la misma'
+        });
         return;
       }
 
       try {
-        const response = await axios.post('http://localhost:5000/api/exchange', form.value)
-        alert('Operación registrada con éxito')
+        await axios.post('http://localhost:5000/api/exchange', form.value)
+        Swal.fire({
+          icon: 'success',
+          title: 'Éxito',
+          text: 'Operación registrada con éxito'
+        })
       } catch (error) {
-        alert('Error al registrar la operación')
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Error al registrar la operación'
+        })
       }
     }
 
-    return { form, submitForm }
+    return { form, submitForm, validateMonto }
   }
 })
 </script>

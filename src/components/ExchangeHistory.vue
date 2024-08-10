@@ -69,7 +69,7 @@ export default defineComponent({
                 const { startDate, endDate } = filters.value;
                 const response = await axios.get<ExchangeRequest[]>(`http://localhost:5000/api/exchange-history?startDate=${startDate}&endDate=${endDate}`);
                 requests.value = response.data;
-                currentPage.value = 1;  // Reset to the first page after fetching new data
+                currentPage.value = 1;
             } catch (error) {
                 alert('Error al obtener el historial');
             }
