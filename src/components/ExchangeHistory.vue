@@ -67,7 +67,7 @@ export default defineComponent({
         const fetchHistory = async () => {
             try {
                 const { startDate, endDate } = filters.value;
-                const response = await axios.get<ExchangeRequest[]>(`https://test-kambista-e1ed0.web.app:5000/api/exchange-history?startDate=${startDate}&endDate=${endDate}`);
+                const response = await axios.get<ExchangeRequest[]>(`http://ec2-44-202-13-34.compute-1.amazonaws.com:5000/api/exchange-history?startDate=${startDate}&endDate=${endDate}`);
                 requests.value = response.data;
                 currentPage.value = 1;
             } catch (error) {
