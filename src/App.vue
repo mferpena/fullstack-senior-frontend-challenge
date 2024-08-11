@@ -6,7 +6,7 @@ import { RouterLink, RouterView } from 'vue-router'
   <header class="bg-gray-100 p-4">
     <div class="flex flex-col items-center justify-center mb-4">
       <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-      <div class="text-lg mt-2">v0.0.4</div>
+      <div class="text-lg mt-2">v0.0.5</div>
     </div>
     <div class="wrapper">
       <nav>
