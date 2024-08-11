@@ -70,7 +70,7 @@ export default defineComponent({
       }
 
       try {
-        await axios.post('http://localhost:5000/api/exchange', form.value)
+        await axios.post('https://test-kambista-e1ed0.web.app:5000/api/exchange', form.value)
         Swal.fire({
           icon: 'success',
           title: 'Éxito',
